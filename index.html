@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Domains For Sale</title>
+    <title>WadBot ~ Discontinued</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,6 +11,17 @@
             margin: 100px auto;
             padding: 20px;
             text-align: center;
+        }
+        h1 {
+            font-size: 1.8em;
+            font-weight: normal;
+            margin-bottom: 10px;
+        }
+        .info {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.95em;
+            line-height: 1.5;
         }
         a {
             display: block;
@@ -33,6 +44,12 @@
     </style>
 </head>
 <body>
+    <h1>WadBot</h1>
+    <p class="info">
+        WadBot was discontinued <span id="timeAgo"></span> after Riot introduced Vanguard to LoL and is no longer functional.<br><br>
+        The following domains are for sale:
+    </p>
+    
     <a href="mailto:csaccs@protonmail.com?subject=script.lol">
         script.lol<br>290 EUR
     </a>
@@ -44,5 +61,26 @@
     <a href="mailto:csaccs@protonmail.com?subject=Both domains" class="small">
         Both domains - 490 EUR
     </a>
+
+    <script>
+        // Calculate time since April 11, 2024
+        const discontinuedDate = new Date('2024-04-11');
+        const today = new Date();
+        
+        const timeDiff = today - discontinuedDate;
+        const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+        
+        const years = Math.floor(daysDiff / 365);
+        const remainingDays = daysDiff % 365;
+        
+        let timeString = '';
+        if (years > 0) {
+            timeString = `${years} year${years !== 1 ? 's' : ''} and ${remainingDays} day${remainingDays !== 1 ? 's' : ''} ago`;
+        } else {
+            timeString = `${daysDiff} day${daysDiff !== 1 ? 's' : ''} ago`;
+        }
+        
+        document.getElementById('timeAgo').textContent = timeString;
+    </script>
 </body>
 </html>
