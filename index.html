@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WadBot ~ Discontinued</title>
+    <title>WadBot</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -23,44 +23,107 @@
             font-size: 0.95em;
             line-height: 1.5;
         }
+        .domain-box {
+            border: 2px solid #000;
+            padding: 20px;
+            margin-top: 20px;
+            position: relative;
+        }
+        .discount-label {
+            background: #000;
+            color: #fff;
+            padding: 8px 20px;
+            font-size: 0.9em;
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+        }
         a {
             display: block;
-            padding: 30px;
-            margin: 20px 0;
+            padding: 25px;
+            margin: 15px 0;
             text-decoration: none;
             color: #000;
-            border: 2px solid #000;
+            border: 1px solid #000;
+            transition: all 0.2s ease;
         }
         a:hover {
             background: #f5f5f5;
         }
+        a:first-of-type {
+            margin-top: 25px;
+        }
+        .price {
+            margin-top: 5px;
+        }
+        .old-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 0.85em;
+            margin-right: 10px;
+        }
+        .new-price {
+            font-weight: bold;
+            color: #000;
+        }
         .small {
-            padding: 15px;
             font-size: 0.9em;
-            border: 1px solid #999;
-            color: #666;
-            margin-top: 40px;
+            background: #000;
+            color: #fff;
+        }
+        .small:hover {
+            background: #333;
+        }
+        @media (max-width: 480px) {
+            body {
+                margin: 50px auto;
+                padding: 15px;
+            }
+            .domain-box {
+                padding: 15px;
+            }
+            a {
+                padding: 20px;
+            }
         }
     </style>
 </head>
 <body>
     <h1>WadBot</h1>
     <p class="info">
-        WadBot was discontinued <span id="timeAgo"></span> after Riot introduced Vanguard to LoL and is no longer functional.<br><br>
+        WadBot was discontinued <span id="timeAgo"></span> when Vanguard was introduced to LoL.<br><br>
         The following domains are for sale:
     </p>
     
-    <a href="mailto:csaccs@protonmail.com?subject=script.lol">
-        script.lol<br>290 EUR
-    </a>
-    
-    <a href="mailto:csaccs@protonmail.com?subject=wadbot.lol">
-        wadbot.lol<br>390 EUR
-    </a>
-    
-    <a href="mailto:csaccs@protonmail.com?subject=Both domains" class="small">
-        Both domains - 490 EUR
-    </a>
+    <div class="domain-box">
+        <div class="discount-label" id="discountLabel"></div>
+        
+        <a href="mailto:csaccs@protonmail.com?subject=script.lol">
+            script.lol<br>
+            <div class="price">
+                <span class="old-price">290 EUR</span>
+                <span class="new-price" id="price1"></span>
+            </div>
+        </a>
+        
+        <a href="mailto:csaccs@protonmail.com?subject=wadbot.lol">
+            wadbot.lol<br>
+            <div class="price">
+                <span class="old-price">390 EUR</span>
+                <span class="new-price" id="price2"></span>
+            </div>
+        </a>
+        
+        <a href="mailto:csaccs@protonmail.com?subject=Both domains" class="small">
+            Both domains<br>
+            <div class="price">
+                <span class="old-price">490 EUR</span>
+                <span class="new-price" id="price3"></span>
+            </div>
+        </a>
+    </div>
 
     <script>
         // Calculate time since April 11, 2024
@@ -81,6 +144,30 @@
         }
         
         document.getElementById('timeAgo').textContent = timeString;
+
+        // Calculate discount based on days since October 1st
+        const currentYear = today.getFullYear();
+        const oct1 = new Date(currentYear, 9, 1); // Month is 0-indexed, so 9 = October
+        
+        // If we're before October 1st of current year, use previous year's October 1st
+        if (today < oct1) {
+            oct1.setFullYear(currentYear - 1);
+        }
+        
+        const daysSinceOct1 = Math.floor((today - oct1) / (1000 * 60 * 60 * 24));
+        const discountPercent = daysSinceOct1;
+        
+        // Update discount label
+        document.getElementById('discountLabel').textContent = `${discountPercent}% OFF (price reduces by 1% every day)`;
+        
+        // Calculate and update prices
+        const originalPrices = [290, 390, 490];
+        const discountMultiplier = 1 - (discountPercent / 100);
+        
+        originalPrices.forEach((price, index) => {
+            const discountedPrice = Math.round(price * discountMultiplier / 5) * 5; // Round to nearest 5
+            document.getElementById(`price${index + 1}`).textContent = `${discountedPrice} EUR`;
+        });
     </script>
 </body>
 </html>
